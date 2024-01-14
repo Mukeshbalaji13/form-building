@@ -1,14 +1,13 @@
 //DroppableComponent.jsx
-import { Button, Input, Radio } from "antd";
-import React, { useState } from "react";
-import { useDrop } from "react-dnd";
+import React from "react";
+// import { useDrop } from "react-dnd";
 import { FormComponents } from "./FormComponents";
-import { useDispatch, useSelector } from "react-redux";
-import { type } from "@testing-library/user-event/dist/type";
+// import { useSelector } from "react-redux";
+// import { type } from "@testing-library/user-event/dist/type";
 
 export function DroppableComponent(props){
-const dispatch = useDispatch()
-const formComponents = useSelector((state) => state.componentsDropped);
+// const dispatch = useDispatch()
+// const formComponents = useSelector((state) => state.componentsDropped);
 
 
     // const [{canDrop, isOver}, drop] = useDrop({

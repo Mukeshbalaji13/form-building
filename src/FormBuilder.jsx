@@ -8,7 +8,7 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 // import { UpdateComponents } from './UpdateComponents';
 import { Button } from 'antd';
 import { useNavigate } from 'react-router-dom';
-import  SaveIcon  from "./Assets/save icon.png"
+// import  SaveIcon  from "./Assets/save icon.png"
 
 const FormBuilder = () => {
   const FormToShow = useSelector((data)=>data)
@@ -21,13 +21,17 @@ const FormBuilder = () => {
 
   useEffect(()=>{
     // const setSelectedForm = 
-    FormToShow.formsList.map((e)=>{
-      if(FormToShow.SelectedFormId===e.formId){
-        // return e.formBuilt
-        setDropped(e.formBuilt)
-      }
-    })
-  },[FormToShow.formsList.formBuilt])
+    const selectedFormshow = FormToShow.formsList.find((e)=>e.formId===FormToShow.SelectedFormId)
+    // FormToShow.formsList.map((e)=>{
+    //   if(FormToShow.SelectedFormId===e.formId){
+    //     // return e.formBuilt
+    //     setDropped(e.formBuilt)
+    //   }
+    // })
+    if(selectedFormshow){
+      setDropped(selectedFormshow.formBuilt)
+    }
+  },[FormToShow.formsList.formBuilt, FormToShow.SelectedFormId, FormToShow.formsList])
 
   // useEffect(()=>{
   //   setDropped(FormToShow.componentsDropped)

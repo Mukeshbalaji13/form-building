@@ -4,8 +4,8 @@ import { Button, Input } from "antd";
 import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
 import signupBackground from "./Assets/signup page background.jpg"
 import signupDisplayPicture from "./Assets/3960020_2090141.jpg"
-import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
-import { useDispatch, useSelector } from "react-redux";
+import { Link } from 'react-router-dom';
+import { useDispatch } from "react-redux";
 
 export function SignUp() {
 
@@ -60,19 +60,19 @@ export function SignUp() {
             setConfirmPassword('');
         }
     }
-    const userData = useSelector((data)=>data)
+    // const userData = useSelector((data)=>data)
 
     return(
         <>
         <div className="login-Page-Container">
             <div className="login-Image-Container">
-                <img className="login-Background-Image"  src={signupBackground}/>
+                <img className="login-Background-Image"  src={signupBackground} alt=''/>
             </div>
 
             <div className="login-Details-Container">
                 <div className="login-Shadow_box">
                     <div className="login-Details-Image-container">
-                        <img className="login-Details-Image" src={signupDisplayPicture}/>
+                        <img className="login-Details-Image" src={signupDisplayPicture} alt=''/>
                     </div>
 
                     <div className="login-Details-Inner-Container">

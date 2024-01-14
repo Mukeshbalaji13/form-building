@@ -5,7 +5,7 @@ import { Button, Input } from "antd";
 import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
 import loginBackground from "./Assets/login page background.jpg"
 import loginDisplayPicture from "./Assets/4105860_2152177.jpg"
-import { BrowserRouter, Routes, Route, Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux";
 
 export function LoginPage() {
@@ -37,7 +37,7 @@ export function LoginPage() {
         <>
         <div className="login-Page-Container">
             <div className="login-Image-Container">
-                <img className="login-Background-Image" src={loginBackground} />
+                <img className="login-Background-Image" src={loginBackground} alt=''/>
             </div>
 
             <div className="login-Details-Container">
@@ -68,7 +68,7 @@ export function LoginPage() {
 
                     </div>
                     <div className="login-Details-Image-container">
-                        <img className="login-Details-Image" src={loginDisplayPicture}/>
+                        <img className="login-Details-Image" src={loginDisplayPicture} alt=''/>
                     </div>
                     {messageTogggle && <div className="LoginErrorMessage">User name or Password is invalid, <br /> try Changing it or Sign up </div>}
                 </div>

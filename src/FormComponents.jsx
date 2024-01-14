@@ -1,15 +1,15 @@
 //FormComponents.jsx
 import React, { useState } from "react";
-import { Button, Checkbox, DatePicker, Input, InputNumber, Modal, Radio, Select, TimePicker, Slider } from "antd";
-import { useSelector } from "react-redux";
+import { Button, Checkbox, DatePicker, Input, InputNumber, Radio, Select, TimePicker, Slider } from "antd";
+// import { useSelector } from "react-redux";
 import EditIcon from "./Assets/edit icon.png";
 import DeleteIcon from "./Assets/delete icon.png";
 import CancelIcon from "./Assets/cancel button.png"
 import { useDrop } from "react-dnd";
 
 export function FormComponents(props) {
-    const ComponentsCollected = useSelector((data)=>data.componentsDropped)
-    const [editOption, setEditOption] =useState(false);
+    // const ComponentsCollected = useSelector((data)=>data.componentsDropped)
+    // const [editOption, setEditOption] =useState(false);
     const [ModalOption, setModalOption] = useState(null);
     const [RadioButtonsOptions, setRadioButtonsOptions] = useState([]);
     const [CheckBoxesOptions, setCheckBoxesOptions] = useState([]);
@@ -17,7 +17,7 @@ export function FormComponents(props) {
    
 
 
-    const [{canDrop, isOver}, drop] = useDrop({
+    const [{canDrop}, drop] = useDrop({
         accept: 'item',
         drop: (item) => {
             props.setDropped([...props.dropped, item])
@@ -31,7 +31,7 @@ export function FormComponents(props) {
     
     function fieldsEdit(field){
         setModalOption(field);
-        props.dropped.map((e)=>{
+        props.dropped.forEach((e)=>{
             if(e.id===field.id && e.type==="input-radio"){
                 setRadioButtonsOptions(e.options)
             }
@@ -45,14 +45,14 @@ export function FormComponents(props) {
     }
 
     function deleteFields(field, deleteindex){
-        const deletedField = props.dropped.filter((_, index)=> index!=deleteindex);
+        const deletedField = props.dropped.filter((_, index)=> index!==deleteindex);
         props.setDropped(deletedField)
     }
 
     function change() {
         const updatedDropped = props.dropped.map((item) => {
           if (item.id === ModalOption.id) {
-            if(ModalOption && ModalOption.type==="input-text" || ModalOption.type==="input-date" || ModalOption.type==="input-time" || ModalOption.type==="input-dateAndTime" || ModalOption.type==="input-url" || ModalOption.type==="input-tel"){
+            if(ModalOption && (ModalOption.type==="input-text" || ModalOption.type==="input-date" || ModalOption.type==="input-time" || ModalOption.type==="input-dateAndTime" || ModalOption.type==="input-url" || ModalOption.type==="input-tel")){
                 return {
                     ...item, 
                     label: ModalOption.label, 
@@ -100,7 +100,7 @@ export function FormComponents(props) {
                 }
               }
             else if(ModalOption && ModalOption.type==="input-radio"){
-                let newRadios= RadioButtonsOptions.filter(option=> option!='')
+                let newRadios= RadioButtonsOptions.filter(option=> option!=='')
 
                 return{
                     ...item,
@@ -109,7 +109,7 @@ export function FormComponents(props) {
                 }
               }
             else if(ModalOption && ModalOption.type==="input-checkbox"){
-                let newChecks= CheckBoxesOptions.filter(option=> option!='')
+                let newChecks= CheckBoxesOptions.filter(option=> option!=='')
 
                 return{
                     ...item,
@@ -118,13 +118,14 @@ export function FormComponents(props) {
                 }
               }
             else if(ModalOption && ModalOption.type==="selectDrop"){
-                let newDropDowns = DropDownOptions.filter(option=> option!='')
+                let newDropDowns = DropDownOptions.filter(option=> option!=='')
                 return{
                     ...item,
                     label: ModalOption.label,
                     options: newDropDowns
                 }
             }
+            return item;
           }
           else{
             return item;
@@ -132,7 +133,7 @@ export function FormComponents(props) {
         });
       
         props.setDropped(updatedDropped);
-        setEditOption(false);
+        // setEditOption(false);
         // setRadioButtonsOptions([]);
         // setCheckBoxesOptions([]);
         // setDropDownOptions([])
@@ -152,17 +153,17 @@ export function FormComponents(props) {
     }
 
     function cancelRadioOption(_, deleteindex){
-        const updatedRadioButtonsOptions = RadioButtonsOptions.filter((_, index)=> index!=deleteindex);
+        const updatedRadioButtonsOptions = RadioButtonsOptions.filter((_, index)=> index!==deleteindex);
         setRadioButtonsOptions(updatedRadioButtonsOptions);
     }
 
     function cancelCheckBoxOption(_, deleteindex){
-        const updatedCheckBoxesOptions = CheckBoxesOptions.filter((_, index)=> index!=deleteindex);
+        const updatedCheckBoxesOptions = CheckBoxesOptions.filter((_, index)=> index!==deleteindex);
         setCheckBoxesOptions(updatedCheckBoxesOptions);
     }
 
     function cancelDropDownOptions(_, deleteindex){
-        const updatedDropDownOptions = DropDownOptions.filter((_, index)=> index!=deleteindex);
+        const updatedDropDownOptions = DropDownOptions.filter((_, index)=> index!==deleteindex);
         setDropDownOptions(updatedDropDownOptions);
     }
     return(
@@ -178,10 +179,10 @@ if(e.type==="input-text"){
             <label htmlFor="input" style={{fontWeight:"bolder"}}>{e.label}</label>
             <Input style={{width:"80%", height:"40px", border:"1.5px solid black", borderRadius:"0px"}} placeholder={e.placeholder} type="text" disabled/>
             <button style={{position: "absolute", top: "-10px", right: "35px", backgroundColor: "#008000", color: "#fff", padding: "5px 10px", border: "none", cursor: "pointer", borderRadius: "50px", width:"25px", height:"25px", display:"flex",  justifyContent:"center"}}  onClick={()=>{fieldsEdit(e)}}>
-                <img  style={{width:"250%", height:"100%"}} src={EditIcon} />
+                <img  style={{width:"250%", height:"100%"}} src={EditIcon} alt="buuton"/>
             </button>
             <button style={{position: "absolute", top: "-10px", right: "5px", backgroundColor: "#cc0000", color: "#fff", padding: "5px 10px", border: "none", cursor: "pointer", borderRadius: "50px", width:"25px", height:"25px", display:"flex", alignItems:"center", justifyContent:"center"}}>
-                <img  style={{width:"280%", height:"100%"}} onClick={()=>{deleteFields(e, index)}} src={DeleteIcon} />
+                <img  style={{width:"280%", height:"100%"}} onClick={()=>{deleteFields(e, index)}} src={DeleteIcon} alt="buuton"/>
             </button>
         </div>
     )
@@ -192,10 +193,10 @@ else if(e.type==="input-number"){
             <label htmlFor="input" style={{fontWeight:"bolder"}}>{e.label}</label>
             <InputNumber style={{width:"80%", height:"40px", border:"1.5px solid black", borderRadius:"0px"}} placeholder={e.placeholder} type="number" min={e.minimumValue} max={e.maximumValue}  disabled/>
             <button style={{position: "absolute", top: "-10px", right: "35px", backgroundColor: "#008000", color: "#fff", padding: "5px 10px", border: "none", cursor: "pointer", borderRadius: "50px", width:"25px", height:"25px", display:"flex",  justifyContent:"center"}}  onClick={()=>{fieldsEdit(e)}}>
-                <img  style={{width:"250%", height:"100%"}} src={EditIcon} />
+                <img  style={{width:"250%", height:"100%"}} src={EditIcon} alt="buuton"/>
             </button>
             <button style={{position: "absolute", top: "-10px", right: "5px", backgroundColor: "#cc0000", color: "#fff", padding: "5px 10px", border: "none", cursor: "pointer", borderRadius: "50px", width:"25px", height:"25px", display:"flex", alignItems:"center", justifyContent:"center"}}>
-                <img  style={{width:"280%", height:"100%"}} src={DeleteIcon} onClick={()=>{deleteFields(e, index)}} />
+                <img  style={{width:"280%", height:"100%"}} src={DeleteIcon} onClick={()=>{deleteFields(e, index)}} alt="buuton"/>
             </button>
         </div>
     )
@@ -207,10 +208,10 @@ else if(e.type==="input-date"){
             <label htmlFor="input" style={{fontWeight:"bolder"}}>{e.label}</label>
             <DatePicker placeholder={e.placeholder}  disabled/>
             <button style={{position: "absolute", top: "-10px", right: "35px", backgroundColor: "#008000", color: "#fff", padding: "5px 10px", border: "none", cursor: "pointer", borderRadius: "50px", width:"25px", height:"25px", display:"flex",  justifyContent:"center"}}  onClick={()=>{fieldsEdit(e)}}>
-                <img  style={{width:"250%", height:"100%"}} src={EditIcon} />
+                <img  style={{width:"250%", height:"100%"}} src={EditIcon} alt="buuton"/>
             </button>
             <button style={{position: "absolute", top: "-10px", right: "5px", backgroundColor: "#cc0000", color: "#fff", padding: "5px 10px", border: "none", cursor: "pointer", borderRadius: "50px", width:"25px", height:"25px", display:"flex", alignItems:"center", justifyContent:"center"}}>
-                <img  style={{width:"280%", height:"100%"}} src={DeleteIcon} onClick={()=>{deleteFields(e, index)}} />
+                <img  style={{width:"280%", height:"100%"}} src={DeleteIcon} onClick={()=>{deleteFields(e, index)}} alt="buuton"/>
             </button>
         </div>
     )
@@ -222,10 +223,10 @@ else if(e.type==="input-time"){
             <label htmlFor="input" style={{fontWeight:"bolder"}}>{e.label}</label>
             <TimePicker placeholder={e.placeholder} disabled/>
             <button style={{position: "absolute", top: "-10px", right: "35px", backgroundColor: "#008000", color: "#fff", padding: "5px 10px", border: "none", cursor: "pointer", borderRadius: "50px", width:"25px", height:"25px", display:"flex",  justifyContent:"center"}}  onClick={()=>{fieldsEdit(e)}}>
-                <img  style={{width:"250%", height:"100%"}} src={EditIcon} />
+                <img  style={{width:"250%", height:"100%"}} src={EditIcon} alt="buuton"/>
             </button>
             <button style={{position: "absolute", top: "-10px", right: "5px", backgroundColor: "#cc0000", color: "#fff", padding: "5px 10px", border: "none", cursor: "pointer", borderRadius: "50px", width:"25px", height:"25px", display:"flex", alignItems:"center", justifyContent:"center"}}>
-                <img  style={{width:"280%", height:"100%"}} src={DeleteIcon} onClick={()=>{deleteFields(e, index)}} />
+                <img  style={{width:"280%", height:"100%"}} src={DeleteIcon} onClick={()=>{deleteFields(e, index)}} alt="buuton"/>
             </button>
         </div>
     )
@@ -243,10 +244,10 @@ else if(e.type==="input-dateAndTime"){
           disabled
           />
            <button style={{position: "absolute", top: "-10px", right: "35px", backgroundColor: "#008000", color: "#fff", padding: "5px 10px", border: "none", cursor: "pointer", borderRadius: "50px", width:"25px", height:"25px", display:"flex",  justifyContent:"center"}}  onClick={()=>{fieldsEdit(e)}}>
-                <img  style={{width:"250%", height:"100%"}} src={EditIcon} />
+                <img  style={{width:"250%", height:"100%"}} src={EditIcon} alt="buuton"/>
             </button>
             <button style={{position: "absolute", top: "-10px", right: "5px", backgroundColor: "#cc0000", color: "#fff", padding: "5px 10px", border: "none", cursor: "pointer", borderRadius: "50px", width:"25px", height:"25px", display:"flex", alignItems:"center", justifyContent:"center"}}>
-                <img  style={{width:"280%", height:"100%"}} src={DeleteIcon} onClick={()=>{deleteFields(e, index)}} />
+                <img  style={{width:"280%", height:"100%"}} src={DeleteIcon} onClick={()=>{deleteFields(e, index)}} alt="buuton"/>
             </button>
         </div>
     )
@@ -257,10 +258,10 @@ else if(e.type==="input-tel"){
             <label htmlFor="input" style={{fontWeight:"bolder"}}>{e.label}</label>
             <input style={{width:"80%", height:"35px", border:"1.5px solid black", borderRadius:"0px"}} type="tel" id="indianPhoneNumber" name="indianPhoneNumber" pattern="^[789]\d{9}$" placeholder={e.placeholder} disabled/>
             <button style={{position: "absolute", top: "-10px", right: "35px", backgroundColor: "#008000", color: "#fff", padding: "5px 10px", border: "none", cursor: "pointer", borderRadius: "50px", width:"25px", height:"25px", display:"flex",  justifyContent:"center"}}  onClick={()=>{fieldsEdit(e)}}>
-                <img  style={{width:"250%", height:"100%"}} src={EditIcon} />
+                <img  style={{width:"250%", height:"100%"}} src={EditIcon} alt="buuton"/>
             </button>
             <button style={{position: "absolute", top: "-10px", right: "5px", backgroundColor: "#cc0000", color: "#fff", padding: "5px 10px", border: "none", cursor: "pointer", borderRadius: "50px", width:"25px", height:"25px", display:"flex", alignItems:"center", justifyContent:"center"}}>
-                <img  style={{width:"280%", height:"100%"}} src={DeleteIcon} onClick={()=>{deleteFields(e, index)}} />
+                <img  style={{width:"280%", height:"100%"}} src={DeleteIcon} onClick={()=>{deleteFields(e, index)}} alt="buuton"/>
             </button>
         </div>
         )
@@ -273,10 +274,10 @@ else if(e.type==="input-url"){
             <label htmlFor="input" style={{fontWeight:"bolder"}}>{e.label}</label>
             <input style={{width:"80%", height:"35px", border:"1.5px solid black", borderRadius:"0px"}} type="url" pattern={pattern} placeholder={e.placeholder} disabled/>
             <button style={{position: "absolute", top: "-10px", right: "35px", backgroundColor: "#008000", color: "#fff", padding: "5px 10px", border: "none", cursor: "pointer", borderRadius: "50px", width:"25px", height:"25px", display:"flex",  justifyContent:"center"}}  onClick={()=>{fieldsEdit(e)}}>
-                <img  style={{width:"250%", height:"100%"}} src={EditIcon} />
+                <img  style={{width:"250%", height:"100%"}} src={EditIcon} alt="buuton"/>
             </button>
             <button style={{position: "absolute", top: "-10px", right: "5px", backgroundColor: "#cc0000", color: "#fff", padding: "5px 10px", border: "none", cursor: "pointer", borderRadius: "50px", width:"25px", height:"25px", display:"flex", alignItems:"center", justifyContent:"center"}}>
-                <img  style={{width:"280%", height:"100%"}} src={DeleteIcon} onClick={()=>{deleteFields(e, index)}} />
+                <img  style={{width:"280%", height:"100%"}} src={DeleteIcon} onClick={()=>{deleteFields(e, index)}} alt="buuton"/>
             </button>
         </div>
     )
@@ -288,10 +289,10 @@ else if(e.type==="textarea"){
             <label htmlFor="textarea" style={{fontWeight:"bolder"}}>{e.label}</label>
             <textarea name="textarea" id="textarea" cols={e.cols} rows={e.rows} placeholder={e.placeholder} disabled></textarea>
             <button style={{position: "absolute", top: "-10px", right: "35px", backgroundColor: "#008000", color: "#fff", padding: "5px 10px", border: "none", cursor: "pointer", borderRadius: "50px", width:"25px", height:"25px", display:"flex",  justifyContent:"center"}}  onClick={()=>{fieldsEdit(e)}}>
-                <img  style={{width:"250%", height:"100%"}} src={EditIcon} />
+                <img  style={{width:"250%", height:"100%"}} src={EditIcon} alt="buuton"/>
             </button>
             <button style={{position: "absolute", top: "-10px", right: "5px", backgroundColor: "#cc0000", color: "#fff", padding: "5px 10px", border: "none", cursor: "pointer", borderRadius: "50px", width:"25px", height:"25px", display:"flex", alignItems:"center", justifyContent:"center"}}>
-                <img  style={{width:"280%", height:"100%"}} src={DeleteIcon} onClick={()=>{deleteFields(e, index)}} />
+                <img  style={{width:"280%", height:"100%"}} src={DeleteIcon} onClick={()=>{deleteFields(e, index)}} alt="buuton"/>
             </button>
         </div>
     )
@@ -316,10 +317,10 @@ else if(e.type==="input-radio"){
 
             </div>
             <button style={{position: "absolute", top: "-10px", right: "35px", backgroundColor: "#008000", color: "#fff", padding: "5px 10px", border: "none", cursor: "pointer", borderRadius: "50px", width:"25px", height:"25px", display:"flex",  justifyContent:"center"}}  onClick={()=>{fieldsEdit(e)}}>
-                <img  style={{width:"250%", height:"100%"}} src={EditIcon} />
+                <img  style={{width:"250%", height:"100%"}} src={EditIcon} alt="buuton"/>
             </button>
             <button style={{position: "absolute", top: "-10px", right: "5px", backgroundColor: "#cc0000", color: "#fff", padding: "5px 10px", border: "none", cursor: "pointer", borderRadius: "50px", width:"25px", height:"25px", display:"flex", alignItems:"center", justifyContent:"center"}}>
-                <img  style={{width:"280%", height:"100%"}} src={DeleteIcon} onClick={()=>{deleteFields(e, index)}} />
+                <img  style={{width:"280%", height:"100%"}} src={DeleteIcon} onClick={()=>{deleteFields(e, index)}} alt="buuton"/>
             </button>
         </div>
     )
@@ -342,10 +343,10 @@ else if(e.type==="input-checkbox"){
 
             </div>
             <button style={{position: "absolute", top: "-10px", right: "35px", backgroundColor: "#008000", color: "#fff", padding: "5px 10px", border: "none", cursor: "pointer", borderRadius: "50px", width:"25px", height:"25px", display:"flex",  justifyContent:"center"}}  onClick={()=>{fieldsEdit(e)}}>
-                <img  style={{width:"250%", height:"100%"}} src={EditIcon} />
+                <img  style={{width:"250%", height:"100%"}} src={EditIcon} alt="buuton"/>
             </button>
             <button style={{position: "absolute", top: "-10px", right: "5px", backgroundColor: "#cc0000", color: "#fff", padding: "5px 10px", border: "none", cursor: "pointer", borderRadius: "50px", width:"25px", height:"25px", display:"flex", alignItems:"center", justifyContent:"center"}}>
-                <img  style={{width:"280%", height:"100%"}} src={DeleteIcon} onClick={()=>{deleteFields(e, index)}} />
+                <img  style={{width:"280%", height:"100%"}} src={DeleteIcon} onClick={()=>{deleteFields(e, index)}} alt="buuton"/>
             </button>
         </div>
     )
@@ -363,10 +364,10 @@ else if(e.type==="selectDrop"){
                 </Select>
             </div>
             <button style={{position: "absolute", top: "-10px", right: "35px", backgroundColor: "#008000", color: "#fff", padding: "5px 10px", border: "none", cursor: "pointer", borderRadius: "50px", width:"25px", height:"25px", display:"flex",  justifyContent:"center"}}  onClick={()=>{fieldsEdit(e)}}>
-                <img  style={{width:"250%", height:"100%"}} src={EditIcon} />
+                <img  style={{width:"250%", height:"100%"}} src={EditIcon} alt="buuton"/>
             </button>
             <button style={{position: "absolute", top: "-10px", right: "5px", backgroundColor: "#cc0000", color: "#fff", padding: "5px 10px", border: "none", cursor: "pointer", borderRadius: "50px", width:"25px", height:"25px", display:"flex", alignItems:"center", justifyContent:"center"}}>
-                <img  style={{width:"280%", height:"100%"}} src={DeleteIcon} onClick={()=>{deleteFields(e, index)}} />
+                <img  style={{width:"280%", height:"100%"}} src={DeleteIcon} onClick={()=>{deleteFields(e, index)}} alt="buuton"/>
             </button>
         </div>
     )
@@ -378,10 +379,10 @@ else if(e.type==="fileUpload"){
             <label htmlFor="fileUpload" style={{fontWeight:"bolder"}}>{e.label}</label>
             <input type="file" style={{marginTop:"10px"}} disabled/>
             <button style={{position: "absolute", top: "-10px", right: "35px", backgroundColor: "#008000", color: "#fff", padding: "5px 10px", border: "none", cursor: "pointer", borderRadius: "50px", width:"25px", height:"25px", display:"flex",  justifyContent:"center"}}  onClick={()=>{fieldsEdit(e)}}>
-                <img  style={{width:"250%", height:"100%"}} src={EditIcon} />
+                <img  style={{width:"250%", height:"100%"}} src={EditIcon} alt="buuton"/>
             </button>
             <button style={{position: "absolute", top: "-10px", right: "5px", backgroundColor: "#cc0000", color: "#fff", padding: "5px 10px", border: "none", cursor: "pointer", borderRadius: "50px", width:"25px", height:"25px", display:"flex", alignItems:"center", justifyContent:"center"}}>
-                <img  style={{width:"280%", height:"100%"}} src={DeleteIcon} onClick={()=>{deleteFields(e, index)}} />
+                <img  style={{width:"280%", height:"100%"}} src={DeleteIcon} onClick={()=>{deleteFields(e, index)}} alt="buuton"/>
             </button>
         </div>
     )
@@ -393,10 +394,10 @@ else if(e.type==="slider"){
              <label htmlFor="fileUpload" style={{fontWeight:"bolder"}}>{e.label}</label>
              <Slider min={e.minimumValue} max={e.maximumValue}/>
              <button style={{position: "absolute", top: "-10px", right: "35px", backgroundColor: "#008000", color: "#fff", padding: "5px 10px", border: "none", cursor: "pointer", borderRadius: "50px", width:"25px", height:"25px", display:"flex",  justifyContent:"center"}}  onClick={()=>{fieldsEdit(e)}}>
-                <img  style={{width:"250%", height:"100%"}} src={EditIcon} />
+                <img  style={{width:"250%", height:"100%"}} src={EditIcon} alt="buuton"/>
             </button>
             <button style={{position: "absolute", top: "-10px", right: "5px", backgroundColor: "#cc0000", color: "#fff", padding: "5px 10px", border: "none", cursor: "pointer", borderRadius: "50px", width:"25px", height:"25px", display:"flex", alignItems:"center", justifyContent:"center"}}>
-                <img  style={{width:"280%", height:"100%"}} src={DeleteIcon} onClick={()=>{deleteFields(e, index)}} />
+                <img  style={{width:"280%", height:"100%"}} src={DeleteIcon} onClick={()=>{deleteFields(e, index)}} alt="buuton"/>
             </button>
         </div>
     )
@@ -405,17 +406,19 @@ else if(e.type==="slider"){
 else if(e.type==="button"){
     // const color= e.color;
     return (
-        <div style={{width:"90%", height:"50px", border:"1px dashed black", display:"flex", flexDirection:"column", padding:"8px", position:"relative", display:"felx", alignItems:"center", justifyContent:"center", marginTop:"15px"}}>
+        <div style={{width:"90%", height:"50px", border:"1px dashed black", display:"flex", flexDirection:"column", padding:"8px", position:"relative", alignItems:"center", justifyContent:"center", marginTop:"15px"}}>
             <Button style={{width:"70%", height:"40px", backgroundColor:e.backGroundColor, color:e.fontColor}} disabled>{e.name}</Button>
             <button style={{position: "absolute", top: "-10px", right: "35px", backgroundColor: "#008000", color: "#fff", padding: "5px 10px", border: "none", cursor: "pointer", borderRadius: "50px", width:"25px", height:"25px", display:"flex",  justifyContent:"center"}}  onClick={()=>{fieldsEdit(e)}}>
-                <img  style={{width:"250%", height:"100%"}} src={EditIcon} />
+                <img  style={{width:"250%", height:"100%"}} src={EditIcon} alt="buuton"/>
             </button>
             <button style={{position: "absolute", top: "-10px", right: "5px", backgroundColor: "#cc0000", color: "#fff", padding: "5px 10px", border: "none", cursor: "pointer", borderRadius: "50px", width:"25px", height:"25px", display:"flex", alignItems:"center", justifyContent:"center"}}>
-                <img  style={{width:"280%", height:"100%"}} src={DeleteIcon} onClick={()=>{deleteFields(e, index)}} />
+                <img  style={{width:"280%", height:"100%"}} src={DeleteIcon} onClick={()=>{deleteFields(e, index)}} alt="buuton"/>
             </button>
         </div>
     )
 }
+return null;
+
 })}
 
       </div>
@@ -512,7 +515,7 @@ else if(e.type==="button"){
                                             updatedRadioButtons[index] = e.currentTarget.value;
                                             setRadioButtonsOptions(updatedRadioButtons);
                                         }}/>
-                                            <img src={CancelIcon} style={{width:"8%", height:"55%", cursor:"pointer", position:"absolute", top:"-10px", right:"7px"}} onClick={()=>{cancelRadioOption(radio, index)}}/>
+                                            <img src={CancelIcon} style={{width:"8%", height:"55%", cursor:"pointer", position:"absolute", top:"-10px", right:"7px"}} onClick={()=>{cancelRadioOption(radio, index)}} alt="buuton"/>
                                     </div>
                                     </>
                                 )
@@ -540,7 +543,7 @@ else if(e.type==="button"){
                                         updatedCheckBoexes[index] = e.currentTarget.value;
                                         setCheckBoxesOptions(updatedCheckBoexes);
                                     }}/>
-                                    <img src={CancelIcon} style={{width:"8%", height:"55%", cursor:"pointer", position:"absolute", top:"-10px", right:"7px"}} onClick={()=>{cancelCheckBoxOption(check, index)}}/>
+                                    <img src={CancelIcon} style={{width:"8%", height:"55%", cursor:"pointer", position:"absolute", top:"-10px", right:"7px"}} onClick={()=>{cancelCheckBoxOption(check, index)}} alt="buuton"/>
                                     </div>
                                     </>
                                 )
@@ -568,7 +571,7 @@ else if(e.type==="button"){
                                         updatedDropDownOptions[index]=e.target.value;
                                         setDropDownOptions(updatedDropDownOptions)
                                     }}/>
-                                    <img src={CancelIcon} style={{width:"8%", height:"55%", cursor:"pointer", position:"absolute", top:"-10px", right:"7px"}} onClick={()=>{cancelDropDownOptions(drop, index)}}/>
+                                    <img src={CancelIcon} style={{width:"8%", height:"55%", cursor:"pointer", position:"absolute", top:"-10px", right:"7px"}} onClick={()=>{cancelDropDownOptions(drop, index)}} alt="buuton"/>
                                     </div>
                                     </>
 
