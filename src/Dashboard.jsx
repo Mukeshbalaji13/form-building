@@ -9,12 +9,12 @@ import EditIcon from "./Assets/edit icon.png";
 import DeleteIcon from "./Assets/delete icon.png";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from 'react-router-dom';
-import FormList from "antd/es/form/FormList";
+// import FormList from "antd/es/form/FormList";
 
 export function Dashboard() {
-    const [arr, setArr] = useState([]);
+    // const [arr, setArr] = useState([]);
     const [formName, setFormName] = useState('');
-    const [noDataMessage, setNoDataMessage] = useState('No Forms Created Yet');
+    const noDataMessage = 'No Forms Created Yet';
     const [ModalOpen, setModalOpen] = useState(false);
     const [EditModal, setEditModal] = useState(false);
     const [DeleteModal, setDeleteModal] = useState(false)
@@ -25,7 +25,7 @@ export function Dashboard() {
     const [IndexToDelete, setIndexToDelete] = useState(null);
     const dispatch = useDispatch()
     const FormDetails = useSelector((data)=>data)
-    const [notificationShown, setNotificationShown] = useState(FormDetails.LoginNotification);
+    const notificationShown = FormDetails.LoginNotification;
     let noData = FormDetails.formsList.length === 0;
 
 
@@ -46,7 +46,7 @@ export function Dashboard() {
             action: '',
             formBuilt:[]
         };
-        setArr([...FormDetails.formsList, newForm]);
+        // setArr([...FormDetails.formsList, newForm]);
         dispatch(
             {
                 type:'FORM_DATA',
@@ -153,7 +153,7 @@ export function Dashboard() {
             }
         });
     }
-    }, [notificationShown]);
+    }, [notificationShown, dispatch]);
 
     const handleLinkClick = (formName, formIdSelected) => {
         dispatch({
